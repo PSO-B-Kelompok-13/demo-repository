@@ -1,6 +1,6 @@
-# 📝 Task Traker
+# 📝 Task Tracker
 
-**Task Tracer** adalah aplikasi manajemen tugas harian berbasis **Electron** yang dikembangkan sebagai bagian dari proyek akhir mata kuliah **Pengembangan Sistem Operasi (PSO B)**. Aplikasi ini memudahkan pengguna, khususnya mahasiswa, untuk mencatat, mengelola, dan melacak progres tugas.
+**Task Tracker** adalah aplikasi manajemen tugas harian berbasis **Electron** yang dikembangkan sebagai bagian dari proyek akhir mata kuliah **Pengembangan Sistem Operasi (PSO B)**. Aplikasi ini memudahkan pengguna, khususnya mahasiswa, untuk mencatat, mengelola, dan melacak progres tugas.
 
 Repositori ini merupakan hasil *fork* dan pengembangan lanjutan dari [cassidoo/todometer](https://github.com/cassidoo/todometer), dengan penambahan pipeline CI/CD serta pengemasan dalam container Docker.
 
