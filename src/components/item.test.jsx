@@ -3,7 +3,7 @@ import { vi } from 'vitest';
 import Item from './item';
 import { useAppReducer } from '../AppContext';
 
-vi.mock('../AppContext.jsx', () => ({
+vi.mock('../AppContext', () => ({
   useAppReducer: vi.fn(),
 }));
 
