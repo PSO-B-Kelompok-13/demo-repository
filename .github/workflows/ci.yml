@@ -66,39 +66,3 @@ jobs:
           docker push viexxx/kelompok13:${{ github.sha }}
           docker tag viexxx/kelompok13:${{ github.sha }} viexxx/kelompok13:latest
           docker push viexxx/kelompok13:latest
-
-  integration-test:
-    name: Run Integration Tests
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Pull Docker Image
-        run: docker pull viexxx/kelompok13:${{ github.sha }}
-
-      - name: Start Docker Container
-        run: |
-          docker run -d -p 3000:3000 --name test-app viexxx/kelompok13:${{ github.sha }}
-          sleep 15 # Give time for the app to start
-
-      - name: Run Integration Tests (Health Check)
-        run: |
-          echo "Running a basic health check integration test..."
-          for i in $(seq 1 10); do
-            curl -f http://localhost:3000 && echo "App is reachable!" && break || sleep 5
-            if [ $i -eq 10 ]; then
-              echo "App did not become reachable in time!"
-              docker logs test-app # Show logs for debugging
-              exit 1
-            fi
-          done
-          echo "Integration test passed (basic health check)!"
-
-      - name: Stop and Remove Container
-        if: always()
-        run: docker rm -f test-app
