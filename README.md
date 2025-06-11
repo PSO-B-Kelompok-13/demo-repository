@@ -15,7 +15,7 @@ Repositori ini merupakan hasil *fork* dan pengembangan lanjutan dari [cassidoo/t
 
 ---
 
-## ⚙️ Tools & Teknologi
+## Tools & Teknologi
 
 ### 💻 Development
 - Electron (Desktop App)
@@ -33,6 +33,17 @@ Repositori ini merupakan hasil *fork* dan pengembangan lanjutan dari [cassidoo/t
 
 ---
 
+## CI/CD Workflow
+Setiap perubahan pada branch main akan secara otomatis:
+
+1. Build dan push Docker image ke DockerHub
+2. Menjalankan unit tests di dalam container
+3. Provisioning infrastruktur cloud (via Terraform)
+4. Deploy image terbaru ke cloud VM (via SSH ke EC2)
+
+### Semua proses ini dikelola oleh GitHub Actions dalam folder .github/workflows/
+
+---
 - Clone the repo:
 
 ```bash
