@@ -55,7 +55,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build Docker Image
-        run: docker build -t viexxx/kelompok13 .
+        run: docker build -t viexxx/kelompok13:latest .
 
   integration-test:
     name: Run Integration Tests
