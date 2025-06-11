@@ -63,8 +63,8 @@ jobs:
     needs: build
     steps:
       - name: Pull Docker Image
-        run: docker pull viexxx/kelompok13
+        run: docker pull viexxx/kelompok13:latest
 
       - name: Run Integration Tests in Docker
         run: |
-          docker run --rm viexxx/kelompok13 sh -c "npm install --legacy-peer-deps && npm test"
+          docker run --rm viexxx/kelompok13:latest sh -c "npm install --legacy-peer-deps && npm test"
