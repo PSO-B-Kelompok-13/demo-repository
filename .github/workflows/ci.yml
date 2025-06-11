@@ -47,24 +47,21 @@ jobs:
         run: npm test
 
   build:
-    name: Build Docker Image
+    name: Build Docker Image (with test stage)
     runs-on: ubuntu-latest
     needs: unit-test
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v4
 
-      - name: Build Docker Image
-        run: docker build --target builder -t viexxx/kelompok13:test .
+      # Build image sampai stage "test"
+      - name: Build Docker Image with test stage
+        run: docker build --target test -t viexxx/kelompok13:test .
 
   integration-test:
-    name: Run Integration Tests
+    name: Run Integration Tests in Docker
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Pull Docker Image
-        run: docker pull viexxx/kelompok13
-
-      - name: Run Integration Tests in Docker
-        run: |
-          docker run --rm viexxx/kelompok13:test sh -c "npm install --legacy-peer-deps && npm test"
+      - name: Run Docker Container and Execute Tests
+        run: docker run --rm viexxx/kelompok13:test
