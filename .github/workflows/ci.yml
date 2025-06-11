@@ -55,7 +55,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build Docker Image
-        run: docker build -t viexxx/kelompok13 .
+        run: docker build --target builder -t viexxx/kelompok13:test .
 
   integration-test:
     name: Run Integration Tests
@@ -67,4 +67,4 @@ jobs:
 
       - name: Run Integration Tests in Docker
         run: |
-          docker run --rm viexxx/kelompok13 sh -c "npm install --legacy-peer-deps && npm test"
+          docker run --rm viexxx/kelompok13:test sh -c "npm install --legacy-peer-deps && npm test"
