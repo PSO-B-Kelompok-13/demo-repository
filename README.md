@@ -1,37 +1,4 @@
-# 📝 Task Tracker
-
-**Task Tracker** adalah aplikasi manajemen tugas harian berbasis **Electron** yang dikembangkan sebagai bagian dari proyek akhir mata kuliah **Pengembangan Sistem Operasi (PSO B)**. Aplikasi ini memudahkan pengguna, khususnya mahasiswa, untuk mencatat, mengelola, dan melacak progres tugas.
-
-Repositori ini merupakan hasil *fork* dan pengembangan lanjutan dari [cassidoo/todometer](https://github.com/cassidoo/todometer), dengan penambahan pipeline CI/CD serta pengemasan dalam container Docker.
-
----
-
-## Develop by Kelompok 13 – PSO B
-
-- Viqi Alvianto - 5026221001
-- Muhammad Fauzan – 5026221080
-- Adithya Eka Pramudita – 5026221164
-- Achmad Fahmi Ainur Ridho – 5026221167
-
----
-
-## ⚙️ Tools & Teknologi
-
-### 💻 Development
-- Electron (Desktop App)
-- HTML / CSS / JavaScript
-
-### 🐳 Containerization & Pipeline
-- Docker
-- GitHub Actions (CI/CD)
-- Vitest (Unit Testing)
-
-### ☁️ Deployment & Infrastructure
-- Terraform
-- AWS EC2
-- DockerHub
-
----
+## Todometer
 
 - Clone the repo:
 

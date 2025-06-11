@@ -1,41 +1,26 @@
-FROM node:22
+FROM node:20-alpine3.18 as builder
+WORKDIR /app
 
-# Instal dependensi yang dibutuhkan untuk Electron
-RUN apt-get update && apt-get install \
-    git libx11-xcb1 libxcb-dri3-0 libxtst6 libnss3 libatk-bridge2.0-0 libgtk-3-0 libxss1 libasound2 libdrm2 libgbm1 \
-    -yq --no-install-suggests --no-install-recommends \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+COPY package*.json ./
+RUN npm install --legacy-peer-deps
 
-# Tambahkan pengguna non-root
-RUN useradd -m -d /custom-app custom-app
-WORKDIR /custom-app
+# Copy the rest of the application code
 COPY . .
 
-# Konfigurasi lokasi cache npm
-RUN npm config set cache /tmp/npm-cache
+# Run tests
+RUN npm run test
 
-# Atur direktori global npm untuk menghindari masalah izin
-ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
-ENV PATH=$PATH:/home/node/.npm-global/bin
+# Build the application if tests pass
+RUN npm run build
 
-# Hapus cache npm sebagai root
-USER root
-RUN npm cache clean --force
+FROM node:20-alpine3.18
+WORKDIR /app
 
-# Atur kepemilikan direktori kerja dan node_modules
-RUN mkdir -p /custom-app/node_modules && chown -R custom-app:custom-app /custom-app
+# Copy the built application from the builder stage
+COPY --from=builder /app/dist ./dist
 
-# Instal dependensi npm sebagai pengguna non-root
-USER custom-app
-RUN npm install
+# Install serve globally for serving the built application
+RUN npm install -g serve
 
-# Atur izin khusus untuk Electron
-USER root
-RUN chown root /custom-app/node_modules/electron/dist/chrome-sandbox
-RUN chmod 4755 /custom-app/node_modules/electron/dist/chrome-sandbox
-
-# Kembali menggunakan pengguna non-root
-USER custom-app
-
-# Jalankan aplikasi
-CMD npm run start
+EXPOSE 3000
+CMD ["serve", "-s", "dist", "-l", "3000"]
