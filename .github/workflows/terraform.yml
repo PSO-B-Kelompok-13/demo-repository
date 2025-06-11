@@ -1,7 +1,9 @@
 name: Infrastructure Provisioning
 
 on:
-  workflow_dispatch: 
+  push:
+    branches:
+      - testing2 
 
 jobs:
   terraform:
