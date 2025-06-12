@@ -21,7 +21,7 @@ jobs:
 
       - name: Extract deploy files (contains PEM key)
         run: |
-          tar -xzf deploy_files.tar.gz
+          tar -xzf deploy_files.tar
           chmod 400 deploy/pso_b_kelompok_13.pem
 
       - name: Pull Docker Image
