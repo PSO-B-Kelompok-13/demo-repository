@@ -82,5 +82,3 @@ jobs:
           ignore-unfixed: true
           format: table
           exit-code: 0
-          quiet: true
-          no-progress: true

@@ -1,38 +1,33 @@
-name: Continuous Deployment
+name: Continuous Deployment - Azure VM
 
-# Triggered on push to testing2 for deploymentgit 
 on:
   push:
     branches:
-      - testing2
+      - dev-ridho  # ganti sesuai branch untuk Azure
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-southeast-2
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
       - name: Pull Docker Image
         run: docker pull viexxx/kelompok13:latest
 
-      - name: Upload SSH Key
+      - name: Upload Azure SSH Key
         run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > keypair-kelompok13.pem
-          chmod 400 "keypair-kelompok13.pem"
-          chmod 600 "keypair-kelompok13.pem"
-          
-      - name: Print EC2 instance DNS
-        run: echo "${{ secrets.EC2_INSTANCE_PUBLIC_DNS }}"
+          echo "${{ secrets.AZURE_SSH_PRIVATE_KEY }}" > tasktracker_key.pem
+          chmod 400 tasktracker_key.pem
+          chmod 600 tasktracker_key.pem
 
-      - name: Deploy to EC2
+      - name: Print Azure VM Public IP
+        run: echo "${{ secrets.AZURE_VM_PUBLIC_IP }}"
+
+      - name: Deploy to Azure VM
         run: |
-          ssh -o StrictHostKeyChecking=no -i keypair-kelompok13.pem ubuntu@${{ secrets.EC2_INSTANCE_PUBLIC_DNS }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i tasktracker_key.pem ubuntu@${{ secrets.AZURE_VM_PUBLIC_IP }} << 'EOF'
             docker pull viexxx/kelompok13:latest
-            docker rm -f devops-pso-container || true
-            docker run -d -p 3000:3000 --name devops-pso-container viexxx/kelompok13
+            docker rm -f devops-azure-container || true
+            docker run -d -p 3000:3000 --name devops-azure-container viexxx/kelompok13
           EOF
