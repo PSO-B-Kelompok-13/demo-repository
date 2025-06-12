@@ -42,36 +42,32 @@ Aplikasi ini adalah sebuah To-Do List yang dirancang untuk membantu pengguna men
 ## Alur Kerja
 
 ### Diagram Alur Kerja Sederhana
-Developer 
+Developer 👨‍💻
     |
-    |-- (Push ke 'dev' branch) --> GitHub
-                                    |
-                                    |--> [CI PIPELINE] 
-                                    |    1. ESLint Check
-                                    |    2. Unit Tests (Vitest)
-                                    |    3. Build Docker Image
-                                    |    4. Scan Image (Trivy)
-                                    |    5. Push Image to Docker Hub
-                                    |
-    |-- (Merge 'dev' ke 'main') --> GitHub
-                                    |
-                                    |--> [CD PIPELINE] 
-                                    |    1. Pull Image from Docker Hub
-                                    |    2. SSH to AWS EC2
-                                    |    3. Deploy Container
-                                    |
-                                    V
-                              AWS EC2 Instance 
+    |--[ Push ke branch 'dev' ]--> GitHub
+    |                              |
+    |                              '--> [CI PIPELINE 🤖] - Pengecekan Kualitas & Keamanan
+    |                                   |
+    |                                   |-- 1. Pemeriksaan Kode (ESLint)
+    |                                   |-- 2. Pengujian Unit (Vitest)
+    |                                   |-- 3. Build Docker Image
+    |                                   |-- 4. Pindai Keamanan Image (Trivy)
+    |                                   '-- 5. Push Image ke Docker Hub
+    |
+    |
+    '--[ Merge 'dev' ke 'main' ]--> GitHub
+                                   |
+                                   '--> [CD PIPELINE 🚀] - Deployment ke Production
+                                        |
+                                        |-- 1. Pull Image dari Docker Hub
+                                        |-- 2. Koneksi ke Server (SSH to AWS EC2)
+                                        '-- 3. Jalankan Kontainer Aplikasi (Deploy)
+                                             |
+                                             V
+                                     Aplikasi berjalan di AWS EC2 ☁️ 
 
 ### CI/CD Workflow
-Setiap perubahan pada branch main akan secara otomatis:
-
-1. Build dan push Docker image ke DockerHub
-2. Menjalankan unit tests di dalam container
-3. Provisioning infrastruktur cloud (via Terraform)
-4. Deploy image terbaru ke cloud VM (via SSH ke EC2)
-
-### 1. Pipeline CI (Continuous Integration) - ci.yml
+### 1. Pipeline CI (Continuous Integration) - (cicd.yml)
 Pipeline ini bertugas untuk memastikan setiap perubahan kode pada dev branch memiliki kualitas yang baik, aman, dan siap untuk diintegrasikan.
 
 Trigger: Setiap push atau pull_request ke branch dev.
@@ -83,7 +79,7 @@ Jobs:
 - Scan Docker Image (scan): Menggunakan Trivy untuk memindai kerentanan (vulnerabilities) pada Docker image yang baru saja dibuat, baik pada level OS maupun dependensi aplikasi. Job ini hanya akan melaporkan kerentanan HIGH dan CRITICAL.
 - Push to Docker Hub: Setelah build dan scan selesai, image diunggah ke Docker Hub agar siap digunakan untuk deployment.
 
-### 2. Pipeline CD (Continuous Deployment) - cd.yml
+### 2. Pipeline CD (Continuous Deployment) - (cicd.yml)
 Pipeline ini bertugas untuk men-deploy versi terbaru aplikasi ke server production (AWS EC2) secara otomatis.
 
 Trigger: Setiap push ke branch main.
@@ -114,7 +110,11 @@ Jobs:
 
 
 ### Semua proses ini dikelola oleh GitHub Actions dalam folder .github/workflows/
-
+Setiap perubahan pada branch main akan secara otomatis:
+1. Build dan push Docker image ke DockerHub
+2. Menjalankan unit tests di dalam container
+3. Provisioning infrastruktur cloud (via Terraform)
+4. Deploy image terbaru ke cloud VM (via SSH ke EC2)
 
 ## Menjalankan Proyek Secara Lokal
 Ikuti langkah-langkah berikut untuk menjalankan aplikasi di lingkungan pengembangan lokal Anda.
