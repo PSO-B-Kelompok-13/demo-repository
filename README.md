@@ -44,27 +44,24 @@ Aplikasi ini adalah sebuah To-Do List yang dirancang untuk membantu pengguna men
 ### Diagram Alur Kerja Sederhana
 Developer 👨‍💻
     |
-    |--[ Push ke branch 'dev' ]--> GitHub
+    |──[ Push ke branch 'dev' ]──> GitHub
     |                              |
-    |                              '--> [CI PIPELINE 🤖] - Pengecekan Kualitas & Keamanan
-    |                                   |
-    |                                   |-- 1. Pemeriksaan Kode (ESLint)
-    |                                   |-- 2. Pengujian Unit (Vitest)
-    |                                   |-- 3. Build Docker Image
-    |                                   |-- 4. Pindai Keamanan Image (Trivy)
-    |                                   '-- 5. Push Image ke Docker Hub
+    |                              '──> [CI PIPELINE 🤖] - Pengecekan Kualitas & Keamanan
+    |                                   ├── 1. Pemeriksaan Kode (ESLint)
+    |                                   ├── 2. Pengujian Unit (Vitest)
+    |                                   ├── 3. Build Docker Image
+    |                                   ├── 4. Pindai Keamanan Image (Trivy)
+    |                                   '── 5. Push Image ke Docker Hub
     |
-    |
-    '--[ Merge 'dev' ke 'main' ]--> GitHub
-                                   |
-                                   '--> [CD PIPELINE 🚀] - Deployment ke Production
-                                        |
-                                        |-- 1. Pull Image dari Docker Hub
-                                        |-- 2. Koneksi ke Server (SSH to AWS EC2)
-                                        '-- 3. Jalankan Kontainer Aplikasi (Deploy)
-                                             |
-                                             V
-                                     Aplikasi berjalan di AWS EC2 ☁️ 
+    '──[ Merge 'dev' ke 'main' ]──> GitHub
+                                       |
+                                       '──> [CD PIPELINE 🚀] - Deployment ke Production
+                                            ├── 1. Pull Image dari Docker Hub
+                                            ├── 2. Koneksi ke Server (SSH to AWS EC2)
+                                            '── 3. Jalankan Kontainer Aplikasi (Deploy)
+                                                 |
+                                                 V
+                                         Aplikasi berjalan di AWS EC2 ☁️
 
 ### CI/CD Workflow
 ### 1. Pipeline CI (Continuous Integration) - (cicd.yml)
