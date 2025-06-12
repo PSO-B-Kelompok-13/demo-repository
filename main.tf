@@ -59,7 +59,15 @@ resource "aws_instance" "app_server" {
   key_name      = "pso_b_kelompok_13"
   security_groups = [aws_security_group.app_sg.name]
 
+  user_data = <<-EOF
+              #!/bin/bash
+              apt update -y
+              apt install docker.io -y
+              systemctl start docker
+              usermod -aG docker ubuntu
+            EOF
+
   tags = {
-    Name = "to-do-list"
+    Name = "tasktracker"
   }
 }
