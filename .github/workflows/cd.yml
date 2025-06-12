@@ -23,7 +23,7 @@ jobs:
 
       - name: Print Azure VM Public IP
         run: echo "${{ secrets.AZURE_VM_PUBLIC_IP }}"
-
+      #coba
       - name: Deploy to Azure VM
         run: |
           ssh -o StrictHostKeyChecking=no -i tasktracker_key.pem ubuntu@${{ secrets.AZURE_VM_PUBLIC_IP }} << 'EOF'
