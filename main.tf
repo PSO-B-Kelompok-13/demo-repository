@@ -54,12 +54,12 @@ resource "aws_security_group" "app_sg" {
 
 # EC2 Instance
 resource "aws_instance" "app_server" {
-  ami           = data.aws_ami.ubuntu.id
+  ami           = "ami-00543daa0ad4d3ea4"
   instance_type = "t2.micro"
-  key_name      = "PSO B Kelompok 13"
+  key_name      = "pso_b_kelompok_13"
   security_groups = [aws_security_group.app_sg.name]
 
   tags = {
-    Name = "to-do-list"
+    Name = "to-do-meter"
   }
 }
