@@ -1,5 +1,6 @@
 name: Continuous Deployment
 
+# Triggered on push to testing2 for deploymentgit 
 on:
   push:
     branches:
