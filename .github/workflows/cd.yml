@@ -8,7 +8,11 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -22,13 +26,9 @@ jobs:
       - name: Upload SSH Key
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > pso_b_kelompok_13.pem
-          chmod 400 "pso_b_kelompok_13.pem"
-          chmod 600 "pso_b_kelompok_13.pem"
-          
-      - name: Print EC2 instance DNS
-        run: echo "${{ secrets.EC2_INSTANCE_PUBLIC_DNS }}"
+          chmod 400 pso_b_kelompok_13.pem
 
-      - name: Deploy to EC2 #jfjf
+      - name: Deploy to EC2 Instance
         run: |
           ssh -o StrictHostKeyChecking=no -i pso_b_kelompok_13.pem ubuntu@${{ secrets.EC2_INSTANCE_PUBLIC_DNS }} << 'EOF'
             docker pull viexxx/kelompok13:latest

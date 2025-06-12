@@ -3,7 +3,7 @@ name: Infrastructure Provisioning
 on:
   push:
     branches:
-      - testing3
+      - testing2
 
 jobs:
   terraform:
