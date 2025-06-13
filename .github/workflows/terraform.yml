@@ -3,7 +3,7 @@ name: Infrastructure Provisioning
 on:
   push:
     branches:
-      - testing6 #BISMILLAH
+      - testing6
 
 jobs:
   terraform:
