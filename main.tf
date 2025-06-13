@@ -14,6 +14,9 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
+provider "aws" {
+  region = "ap-southeast-2"
+}
 
 # Security Group to allow SSH (22) and HTTP (3000) access
 resource "aws_security_group" "app_sg" {
@@ -49,18 +52,14 @@ resource "aws_security_group" "app_sg" {
   }
 }
 
-
-provider "aws" {
-  region = var.aws_region
-}
-
+# EC2 Instance
 resource "aws_instance" "app_server" {
   ami           = data.aws_ami.ubuntu.id
-  instance_type = var.instance_type
-  key_name      = var.key_name
+  instance_type = "t2.micro"
+  key_name      = "PSO B Kelompok 13"
   security_groups = [aws_security_group.app_sg.name]
 
   tags = {
-    Name = var.instance_name
+    Name = "to-do-list"
   }
 }

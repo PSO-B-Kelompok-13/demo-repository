@@ -1,12 +1,10 @@
-import PropTypes from "prop-types";
-import { useState } from "react";
+import PropTypes from 'prop-types';
 import { useAppReducer } from "../AppContext";
 import styles from "./Item.module.css";
 
+// Individual todo item
 function Item({ item }) {
   const dispatch = useAppReducer();
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-
   let text = item.text;
   let paused = item.status === "paused";
   let completed = item.status === "completed";
@@ -30,11 +28,6 @@ function Item({ item }) {
     dispatch({ type: "UPDATE_ITEM", item: completedItem });
   }
 
-  function updatePriority(priority) {
-    dispatch({ type: "UPDATE_PRIORITY", item: { ...item, priority } });
-    setDropdownOpen(false); // Close dropdown after selection
-  }
-
   return (
     <div
       className={`${styles.item} ${
@@ -42,97 +35,53 @@ function Item({ item }) {
       }`}
       tabIndex="0"
     >
-      {/* Priority indicator */}
-      <div className={styles.priorityIndicator}>
-        {item.priority === "green" && "🟩"}
-        {item.priority === "orange" && "🟧"}
-        {item.priority === "red" && "🟥"}
-      </div>
-      
-
-      {/* Item name */}
       <div className={styles.itemname}>{text}</div>
-      {item.status !== "completed" && (
-          <div>
-            <button
-              className={styles.priorityToggle}
-              onClick={() => setDropdownOpen(!dropdownOpen)}
-            >
-              Priority ▼
-            </button>
-            {dropdownOpen && (
-              <div className={styles.priorityDropdown}>
-                <button
-                  className={styles.greenFlag}
-                  onClick={() => updatePriority("green")}
-                >
-                  🟩
-                </button>
-                <button
-                  className={styles.orangeFlag}
-                  onClick={() => updatePriority("orange")}
-                >
-                  🟧
-                </button>
-                <button
-                  className={styles.redFlag}
-                  onClick={() => updatePriority("red")}
-                >
-                  🟥
-                </button>
-              </div>
-            )}
-          </div>
-        )}
-      {/* Buttons */}
       <div
         className={`${styles.buttons} ${
           completed ? styles.completedButtons : ""
         }`}
       >
-        {completed && <button className={styles.empty}></button>}
+        {completed && <button className={styles.empty} tabIndex="0"></button>}
         <button
           className={styles.delete}
           onClick={deleteItem}
           data-testid="delete-button"
-        >
-        </button>
+          tabIndex="0"
+        ></button>
         {!paused && !completed && (
           <button
             className={styles.pause}
             onClick={pauseItem}
             data-testid="pause-button"
-          >
-          </button>
+            tabIndex="0"
+          ></button>
         )}
         {(paused || completed) && (
           <button
             className={styles.resume}
             onClick={resumeItem}
             aria-label="Resume item"
-          >
-          </button>
+            tabIndex="0"
+          ></button>
         )}
         {!completed && (
           <button
             className={styles.complete}
             onClick={completeItem}
             aria-label="Complete item"
-          >
-          </button>
+            tabIndex="0"
+          ></button>
         )}
-        {/* Priority Dropdown */}
-        
       </div>
     </div>
   );
 }
 
+// Menambahkan validasi prop untuk item dan propertinya
 Item.propTypes = {
   item: PropTypes.shape({
     text: PropTypes.string.isRequired,
-    status: PropTypes.oneOf(["pending", "paused", "completed"]).isRequired,
-    priority: PropTypes.string,
+    status: PropTypes.oneOf(['pending', 'paused', 'completed']).isRequired,
   }).isRequired,
 };
 

@@ -1,12 +1,12 @@
 :root {
-	--bg: #1e1e2f;           /* Dark navy background */
-	--green: #9acd32;        /* Olive green (classic) */
-	--yellow: #d4af37;       /* Antique gold */
-	--red: #8b0000;          /* Dark red (maroon) */
+	--bg: #403f4d;
+	--green: #62dca5;
+	--yellow: #f7f879;
+	--red: #e1675a;
 
-	--input-color: #2c2c3e;  /* Darker form background */
-	--item-color: #3a3a4d;   /* Item container background */
-	--font-color: #f0eada;   /* Light cream / parchment-like */
+	--input-color: #2e2d33;
+	--item-color: #4e4d5c;
+	--font-color: #fbfafb;
 
 	--big-font-size: 64px;
 	--heading-font-size: 24px;
