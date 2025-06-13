@@ -21,16 +21,16 @@ jobs:
 
       - name: Upload SSH Key
         run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > PSO B Kelompok 13.pem
-          chmod 400 "PSO B Kelompok 13.pem"
-          chmod 600 "PSO B Kelompok 13.pem"
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > psobkelompok13.pem
+          chmod 400 "psobkelompok13.pem"
+          chmod 600 "psobkelompok13.pem"
           
       - name: Print EC2 instance DNS
         run: echo "${{ secrets.EC2_INSTANCE_PUBLIC_DNS }}"
 
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no -i key-pair-PSO B Kelompok 13.pem ubuntu@${{ secrets.EC2_INSTANCE_PUBLIC_DNS }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i psobkelompok13.pem ubuntu@${{ secrets.EC2_INSTANCE_PUBLIC_DNS }} << 'EOF'
             docker pull viexxx/kelompok13:latest
             docker rm -f devops-pso-container || true
             docker run -d -p 3000:3000 --name devops-pso-container viexxx/kelompok13
