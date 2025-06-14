@@ -1,48 +1,29 @@
-name: Continuous Deployment
+name: 🚀 Deploy to EC2
 
 on:
   push:
     branches:
-      - testing7 #faf
+      - testing7
 
 jobs:
   deploy:
+    name: Deploy Docker App to EC2
     runs-on: ubuntu-latest
+
     steps:
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v0.1.10
         with:
-          aws-access-key-id: ${{ secrets.AWSACCESSKEY }}
-          aws-secret-access-key: ${{ secrets.AWSSECRETACCESSKEY }}
-          aws-region: ap-southeast-2
+          host: ${{ secrets.EC2INSTANCEPUBLICDNS }}
+          username: ubuntu
+          key: ${{ secrets.SSHPRIVATEKEY }}
+          script: |
+            echo "[INFO] Login success. Pulling Docker image..."
+            cd ~/kelompok13 || mkdir -p ~/kelompok13 && cd ~/kelompok13
 
-      - name: Pull Docker Image
-        run: docker pull viexxx/kelompok13:latest
+            docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
+            docker pull viexxx/kelompok13:latest
 
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4  # optional: update ke versi terbaru
-        with:
-          node-version: 20
-
-      - name: Cache Node.js dependencies
-        id: cache
-        uses: actions/cache@v3  # ✅ fixed from v2 to v3
-        with:
-          path: ./node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('./package-lock.json') }}
-
-      - name: Install CDK dependencies
-        working-directory: ./
-        run: npm ci --legacy-peer-deps  # ✅ fix: added flag to avoid dependency conflict
-        if: steps.cache.outputs.cache-hit != 'true'
-
-      - name: Deploy CDK stack
-        working-directory: ./
-        run: npx cdk deploy --require-approval never
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWSACCESSKEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWSSECRETACCESSKEY }}
-          AWS_REGION: "ap-southeast-2"
+            echo "[INFO] Restarting container..."
+            docker-compose down || true
+            docker-compose up -d
