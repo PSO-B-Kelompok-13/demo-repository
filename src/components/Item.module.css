@@ -1,0 +1,63 @@
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.item.completed {
+  opacity: 0.5;
+  box-shadow: none;
+}
+
+.itemName {
+  flex-grow: 1;
+  font-size: 18px;
+  color: var(--font-color);
+  transition: color 0.3s ease;
+}
+
+.item.completed .itemName {
+  text-decoration: line-through;
+}
+
+.buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  color: var(--font-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button:active {
+  box-shadow: inset 2px 2px 4px var(--shadow-dark), inset -2px -2px 4px var(--shadow-light);
+  transform: scale(0.98);
+}
+
+.button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.complete {
+  color: var(--green);
+}
+.pause {
+  color: var(--font-color);
+}
+.delete {
+  color: var(--red);
+}

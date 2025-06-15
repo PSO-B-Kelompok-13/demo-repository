@@ -1,0 +1,87 @@
+name: Continuous Integration
+
+on:
+  pull_request:
+    branches:
+      - testing3
+  push:
+    branches:
+      - testing3
+
+jobs:
+  lint:
+    name: Run ESLint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Set Up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies for Linting
+        run: npm ci --legacy-peer-deps
+
+      - name: Run ESLint
+        run: npm run lint
+
+  unit-test:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Set Up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies for Testing
+        run: npm ci --legacy-peer-deps
+
+      - name: Execute Unit Tests
+        run: npm test
+
+  build:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    needs: unit-test
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Build Docker Image
+        run: |
+          docker build -t viexxx/kelompok13 .
+          docker tag viexxx/kelompok13 viexxx/kelompok13:latest
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Push Docker Image to Docker Hub
+        run: |
+          docker push viexxx/kelompok13:latest
+
+  scan:
+    name: Scan Docker Image with Trivy
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Scan and print log docker image with trivy
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: viexxx/kelompok13:latest
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          format: table
+          exit-code: 0
+          quiet: true
+          no-progress: true
+          

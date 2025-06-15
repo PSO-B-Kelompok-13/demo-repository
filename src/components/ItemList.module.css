@@ -1,0 +1,69 @@
+.alldone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  text-align: center;
+}
+
+.alldone img {
+  width: 120px;
+  height: 120px;
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.alldone p {
+  font-size: 18px;
+  color: var(--font-color);
+  opacity: 0.8;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  margin: 2em 0 1em;
+  padding: 15px 20px;
+  border: none;
+  background: var(--bg);
+  color: var(--font-color);
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 500;
+  width: 100%;
+}
+
+.toggle:active {
+  box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
+}
+
+.toggle img {
+  margin-right: 15px;
+  width: 1em;
+  height: 1em;
+  transition: transform 0.3s;
+}
+
+.toggle[data-state="open"] img {
+  transform: rotate(90deg);
+}
+
+.reset {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.reset button {
+  background: transparent;
+  border: none;
+  color: var(--font-color);
+  opacity: 0.6;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 10px 20px;
+}
+.reset button:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
