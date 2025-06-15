@@ -3,10 +3,10 @@ name: Continuous Integration
 on:
   pull_request:
     branches:
-      - testing3
+      - testing7
   push:
     branches:
-      - testing3
+      - testing7
 
 jobs:
   lint:
