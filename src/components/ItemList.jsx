@@ -23,7 +23,7 @@ function ItemList() {
       {pending.length === 0 && completed.length === 0 && paused.length === 0 ? (
         <div className={styles.alldone}>
           <img src={alldone} alt="All tasks are done!" />
-          <p>You're all clear! Add a new task to get started.</p>
+          <p>You&apos;re all clear! Add a new task to get started.</p>
         </div>
       ) : (
         <>
@@ -66,6 +66,7 @@ function ItemList() {
         <div className={styles.reset}>
           <button
             onClick={() => {
+              // eslint-disable-next-line no-alert
               if (confirm("Are you sure you want to reset your progress?")) {
                 dispatch({ type: "RESET_ALL" });
               }
