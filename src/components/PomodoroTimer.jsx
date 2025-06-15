@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import styles from './PomodoroTimer.module.css';
 
-function PomodoroTimer({ onPause }) {
+function PomodoroTimer() {
   const [minutesInput, setMinutesInput] = useState(25);
   const [initialTime, setInitialTime] = useState(25 * 60);
   const [timeLeft, setTimeLeft] = useState(initialTime);
@@ -105,9 +104,5 @@ function PomodoroTimer({ onPause }) {
     </div>
   );
 }
-
-PomodoroTimer.propTypes = {
-  onPause: PropTypes.func.isRequired,
-};
 
 export default PomodoroTimer;
