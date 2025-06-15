@@ -14,9 +14,9 @@ jobs:
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v0.1.10
         with:
-          host: ${{ secrets.EC2INSTANCEPUBLICDNS }}
-          username: ubuntu
-          key: ${{ secrets.SSHPRIVATEKEY }}
+          host: ${{ secrets.PROD_HOST }}
+          username: ${{ secrets.PROD_USER }}
+          key: ${{ secrets.PROD_SSH_KEY }}
           script: |
             echo "[INFO] Login success. Pulling Docker image..."
             cd ~/kelompok13 || mkdir -p ~/kelompok13 && cd ~/kelompok13
