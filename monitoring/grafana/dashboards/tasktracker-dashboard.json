@@ -1,0 +1,91 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "type": "dashboard",
+        "name": "Annotations & Alerts",
+        "enable": true
+      }
+    ]
+  },
+  "panels": [
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "title": "CPU Usage",
+      "type": "gauge",
+      "targets": [
+        {
+          "expr": "100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[1m])) * 100)",
+          "legendFormat": "{{instance}}"
+        }
+      ]
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 2,
+      "title": "Memory Usage",
+      "type": "gauge",
+      "targets": [
+        {
+          "expr": "(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100",
+          "legendFormat": "{{instance}}"
+        }
+      ]
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 3,
+      "title": "Disk Space Usage",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "node_filesystem_avail_bytes{fstype!="tmpfs"}",
+          "legendFormat": "Available - {{instance}} - {{mountpoint}}"
+        },
+        {
+          "expr": "node_filesystem_size_bytes{fstype!="tmpfs"}",
+          "legendFormat": "Total - {{instance}} - {{mountpoint}}"
+        }
+      ]
+    }
+  ],
+  "title": "TaskTracker System Monitoring",
+  "uid": "tasktracker-monitoring",
+  "schemaVersion": 30,
+  "version": 1
+}
