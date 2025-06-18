@@ -56,7 +56,7 @@ Aplikasi ini adalah sebuah To-Do List yang dirancang untuk membantu pengguna men
 
 Pipeline ini memastikan kualitas dan keamanan kode sebelum digabung ke branch `main`.
 
-- **Trigger:** Setiap kali ada **Pull Request** yang dibuat menuju branch `main`
+- **Trigger:** Setiap kali ada Pull Request menuju `main` atau Push langsung ke `main`.
 - Pipeline CI akan otomatis berjalan untuk:
     > **Linting (Code Check):** Menjalankan `ESLint` untuk memeriksa konsistensi dan potensi error pada kode.
     
@@ -72,13 +72,13 @@ Pipeline ini memastikan kualitas dan keamanan kode sebelum digabung ke branch `m
 
 Pipeline ini secara otomatis men-deploy versi aplikasi terbaru ke server produksi (AWS EC2) yang telah disiapkan sebelumnya.
     
-- **Trigger:** Setiap kali ada **Push/Merge** ke branch `main`.
+- **Trigger:** Dipicu secara otomatis setelah pipeline Continuous Integration berhasil diselesaikan pada branch `main`. Mekanisme ini (dikenal sebagai workflow chaining) memastikan proses deployment hanya akan dimulai jika semua tahap pengecekan kualitas (CI) telah lolos.
 - Pipeline CD akan:
     >  **Connect to Server:** GitHub Actions membuat koneksi aman ke server **AWS EC2** menggunakan SSH.
     
     > **Pull Latest Image:** Server menarik Docker Image versi terbaru dari Docker Hub.
     
-    > **Run with Docker Compose:** Kontainer lama dihentikan dan kontainer baru dijalankan dari image terbaru menggunakan `docker-compose`, membuat aplikasi versi baru langsung aktif.
+    > **Run with Docker Compose:** Kontainer lama dihentikan dan kontainer baru dijalankan dari image terbaru menggunakan docker-compose, membuat aplikasi versi baru langsung aktif.
 
 ---
 
