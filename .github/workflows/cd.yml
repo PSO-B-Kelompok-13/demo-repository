@@ -38,8 +38,8 @@ jobs:
                   driver: "awslogs"
                   options:
                     awslogs-group: "tasktracker-app-logs"
-                    awslogs-region: "ap-southeast-2" # <== PASTIKAN REGION INI BENAR
-                    awslogs-stream-prefix: "app"
+                    awslogs-region: "ap-southeast-2" 
+                    awslogs-stream: "app-container-log
                 # ------
             EOF
 
