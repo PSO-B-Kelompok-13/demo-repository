@@ -55,22 +55,24 @@ Aplikasi ini adalah sebuah To-Do List yang dirancang untuk membantu pengguna men
 ### 1. Continuous Integration (CI) – `ci.yml`
 
 Pipeline ini memastikan kualitas dan keamanan kode sebelum digabung ke branch `main`.
-    - **Trigger:** Setiap kali ada **Pull Request** yang dibuat menuju branch `main`
-    - Pipeline CI akan otomatis berjalan untuk:
-        > **Linting (Code Check):** Menjalankan `ESLint` untuk memeriksa konsistensi dan potensi error pada kode.
-        > **Unit Testing:** Menjalankan `Vitest` untuk memverifikasi semua komponen dan fungsi berjalan sesuai harapan.
-        > **Build Docker Image:** Jika lolos tes, aplikasi akan di-build dan dikemas ke dalam sebuah Docker Image.
-        > **Scan Vulnerabilities:** Image yang sudah di-build akan dipindai oleh `Trivy` untuk mendeteksi kerentanan keamanan tingkat `HIGH` dan `CRITICAL`.
-        > **Push to Docker Hub:** Jika aman, image akan diunggah ke Docker Hub agar siap untuk di-deploy.
+
+- **Trigger:** Setiap kali ada **Pull Request** yang dibuat menuju branch `main`
+- Pipeline CI akan otomatis berjalan untuk:
+    > **Linting (Code Check):** Menjalankan `ESLint` untuk memeriksa konsistensi dan potensi error pada kode.
+    > **Unit Testing:** Menjalankan `Vitest` untuk memverifikasi semua komponen dan fungsi berjalan sesuai harapan.
+    > **Build Docker Image:** Jika lolos tes, aplikasi akan di-build dan dikemas ke dalam sebuah Docker Image.
+    > **Scan Vulnerabilities:** Image yang sudah di-build akan dipindai oleh `Trivy` untuk mendeteksi kerentanan keamanan tingkat `HIGH` dan `CRITICAL`.
+    > **Push to Docker Hub:** Jika aman, image akan diunggah ke Docker Hub agar siap untuk di-deploy.
 
 ### 2. Continuous Deployment (CD) – `cd.yml`
 
 Pipeline ini secara otomatis men-deploy versi aplikasi terbaru ke server produksi (AWS EC2) yang telah disiapkan sebelumnya.
-    - **Trigger:** Setiap kali ada **Push/Merge** ke branch `main`.
-    - Pipeline CD akan:
-        >  **Connect to Server:** GitHub Actions membuat koneksi aman ke server **AWS EC2** menggunakan SSH.
-        > **Pull Latest Image:** Server menarik Docker Image versi terbaru dari Docker Hub.
-        > **Run with Docker Compose:** Kontainer lama dihentikan dan kontainer baru dijalankan dari image terbaru menggunakan `docker-compose`, membuat aplikasi versi baru langsung aktif.
+    
+- **Trigger:** Setiap kali ada **Push/Merge** ke branch `main`.
+- Pipeline CD akan:
+    >  **Connect to Server:** GitHub Actions membuat koneksi aman ke server **AWS EC2** menggunakan SSH.
+    > **Pull Latest Image:** Server menarik Docker Image versi terbaru dari Docker Hub.
+    > **Run with Docker Compose:** Kontainer lama dihentikan dan kontainer baru dijalankan dari image terbaru menggunakan `docker-compose`, membuat aplikasi versi baru langsung aktif.
 
 ---
 
