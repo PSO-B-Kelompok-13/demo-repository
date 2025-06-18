@@ -23,7 +23,7 @@ jobs:
             echo "[INFO] Login success. Pulling Docker image..."
             mkdir -p ~/kelompok13 && cd ~/kelompok13
 
-            echo "[INFO] Writing docker-compose.yml..."
+            echo "[INFO] Writing docker-compose.yml with logging configuration..."
             cat <<EOF > docker-compose.yml
             version: '3'
             services:
@@ -32,6 +32,15 @@ jobs:
                 ports:
                   - "80:3000"
                 restart: always
+                
+                # --- Monitoring ---
+                logging:
+                  driver: "awslogs"
+                  options:
+                    awslogs-group: "tasktracker-app-logs"
+                    awslogs-region: "ap-southeast-2" # <== PASTIKAN REGION INI BENAR
+                    awslogs-stream-prefix: "app"
+                # ------
             EOF
 
             docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
