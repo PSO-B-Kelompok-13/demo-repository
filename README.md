@@ -52,7 +52,7 @@ Aplikasi ini adalah sebuah To-Do List yang dirancang untuk membantu pengguna men
 
 ---
 
-##🔁 Workflow Implementation
+## 🔁 Workflow Implementation
 1. Development Workflow
     - Developer membuat atau memperbarui branch dari main.
     - Setelah fitur selesai, dilakukan push ke branch dan membuat pull request.
@@ -100,12 +100,13 @@ Pipeline login ke DockerHub menggunakan username dan password dari Secrets (DOCK
 - Redeploy Menggunakan Docker Compose
 untuk menghentikan container lama (jika ada) dan menjalankan container baru dari image terbaru secara otomatis.
 
-
 ### Semua proses ini dikelola oleh GitHub Actions dalam folder .github/workflows/
 Setiap perubahan pada branch main akan secara otomatis:
 1. Build dan push Docker image ke DockerHub
 2. Menjalankan unit tests di dalam container
 3. Deploy image terbaru ke cloud VM (via SSH ke EC2)
+
+---
 
 ## Menjalankan Proyek Secara Lokal
 Ikuti langkah-langkah berikut untuk menjalankan aplikasi di lingkungan pengembangan lokal Anda.
