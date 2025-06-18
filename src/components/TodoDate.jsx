@@ -1,10 +1,9 @@
-import PropTypes from "prop-types";
 import { useAppState } from "../AppContext";
 import useDateCheck from "../hooks/useDateCheck.js";
 import PomodoroTimer from "./PomodoroTimer";
 import styles from "./TodoDate.module.css";
 
-function TodoDate({ toggleTheme, currentTheme }) {
+function TodoDate() {
   const { date } = useAppState();
   useDateCheck();
 
@@ -18,25 +17,12 @@ function TodoDate({ toggleTheme, currentTheme }) {
         </div>
       </div>
       <div className={styles.weekday}>{date.weekday}</div>
-      
-      <button
-        onClick={toggleTheme}
-        className={`${styles.themeToggle} theme-toggle-button neumorphic`}
-        title="Toggle Theme"
-      >
-        {currentTheme === "light" ? "🌙" : "☀️"}
-      </button>
-      
+      {/* Dark mode toggle button has been removed as part of rollback */}
       <div className={styles.pomodoroContainer}>
         <PomodoroTimer />
       </div>
     </div>
   );
 }
-
-TodoDate.propTypes = {
-  toggleTheme: PropTypes.func.isRequired,
-  currentTheme: PropTypes.string.isRequired,
-};
 
 export default TodoDate;
