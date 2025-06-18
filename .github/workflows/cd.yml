@@ -39,7 +39,7 @@ jobs:
                   options:
                     awslogs-group: "tasktracker-app-logs"
                     awslogs-region: "ap-southeast-2" 
-                    awslogs-stream: "app-container-log
+                    awslogs-stream: "app-container-log"
                 # ------
             EOF
 
