@@ -1,8 +1,16 @@
 # 📝 Task Tracker
 
-**Task Tracker** adalah aplikasi manajemen tugas harian berbasis **Electron** yang dikembangkan sebagai bagian dari proyek akhir mata kuliah **Pengembangan Sistem Operasi (PSO B)**. Aplikasi ini memudahkan pengguna, khususnya mahasiswa, untuk mencatat, mengelola, dan melacak progres tugas.
+**TaskTracker** adalah aplikasi web modern untuk manajemen tugas harian yang dikembangkan sebagai proyek akhir mata kuliah **Pengembangan Sistem Operasi (PSO B)**. Aplikasi ini dirancang dengan pendekatan DevOps penuh, mulai dari containerisasi dengan Docker hingga pipeline CI/CD otomatis menggunakan GitHub Actions untuk deployment ke AWS.
 
 Repositori ini merupakan hasil *fork* dan pengembangan lanjutan dari [cassidoo/todometer](https://github.com/cassidoo/todometer), dengan penambahan pipeline CI/CD serta pengemasan dalam container Docker.
+
+---
+
+## ✨ Fitur Utama
+
+-   **Manajemen Tugas Dinamis:** Tambah, selesaikan, jeda, dan hapus tugas dengan antarmuka yang intuitif.
+-   **Timer Pomodoro Terintegrasi:** Tingkatkan fokus dengan timer Pomodoro yang dapat diatur untuk sesi kerja, istirahat pendek, dan istirahat panjang.
+-   **Tampilan Modern:** Antarmuka pengguna yang bersih dengan gaya *neumorphism* dan dukungan **Light/Dark Mode**.
 
 ---
 
@@ -12,12 +20,12 @@ Repositori ini merupakan hasil *fork* dan pengembangan lanjutan dari [cassidoo/t
 
 ---
 
-## Develop by Kelompok 13 – PSO B
+## 👥 Tim Pengembang – Kelompok 13 (PSO B)
 
-- Viqi Alvianto - 5026221001
-- Muhammad Fauzan – 5026221080
-- Adithya Eka Pramudita – 5026221164
-- Achmad Fahmi Ainur Ridho – 5026221167
+-   **Viqi Alvianto** – `5026221001`
+-   **Muhammad Fauzan** – `5026221080`
+-   **Adithya Eka Pramudita** – `5026221164`
+-   **Achmad Fahmi Ainur Ridho** – `5026221167`
 
 ---
 
@@ -28,83 +36,41 @@ Aplikasi ini adalah sebuah To-Do List yang dirancang untuk membantu pengguna men
 
 ## 🛠️ Tools & Teknologi
 
-### 💻 Development
-- Electron (Desktop App)
-- HTML / CSS / JavaScript
-
-### 🐳 Containerization & Pipeline
-- Docker & DockerHub
-- GitHub Actions (CI/CD)
-- ESLint (Code Quality)
-- Vitest (Unit Testing)
-- Trivy (Vulnerability Scanning)
-
-### ☁️ Deployment
-- AWS EC2 (manual provisioning)
-- Docker Compose (auto deployment via SSH)
+| Kategori | Teknologi |
+| :--- | :--- |
+| **Frontend** | ![React](https://img.shields.io/badge/-React-61DAFB?style=for-the-badge&logo=react&logoColor=black) ![Vite](https://img.shields.io/badge/-Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white) ![JavaScript](https://img.shields.io/badge/-JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black) |
+| **Containerization** | ![Docker](https://img.shields.io/badge/-Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white) ![Docker Hub](https://img.shields.io/badge/-Docker_Hub-0db7ed?style=for-the-badge&logo=docker&logoColor=white) |
+| **CI/CD & Testing** | ![GitHub Actions](https://img.shields.io/badge/-GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white) ![ESLint](https://img.shields.io/badge/-ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white) ![Vitest](https://img.shields.io/badge/-Vitest-6E9F18?style=for-the-badge&logo=vitest&logoColor=white) ![Trivy](https://img.shields.io/badge/-Trivy-00A9E5?style=for-the-badge&logo=trivy&logoColor=white) |
+| **Cloud & Deployment**| ![AWS](https://img.shields.io/badge/-AWS-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white) ![Docker Compose](https://img.shields.io/badge/-Docker_Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white) |
 
 ---
 
-## Alur Kerja
+## Alur Kerja (CI/CD)
 
 ### Diagram Workflow Sederhana
 ![image](https://github.com/user-attachments/assets/394af56a-4f0c-4882-80bf-0f2f737b6caf)
 
 ---
 
-## 🔁 Workflow Implementation
-1. Development Workflow
-    - Developer membuat atau memperbarui branch dari main.
-    - Setelah fitur selesai, dilakukan push ke branch dan membuat pull request.
+### 1. Continuous Integration (CI) – `ci.yml`
+
+Pipeline ini memastikan kualitas dan keamanan kode sebelum digabung ke branch `main`.
+    - **Trigger:** Setiap kali ada **Pull Request** yang dibuat menuju branch `main`
     - Pipeline CI akan otomatis berjalan untuk:
-        > Linting kode menggunakan ESLint.
-        > Menjalankan unit test dengan Vitest.
-        > Build Docker image dan tag sebagai viexxx/kelompok13:latest.
-        > Scan kerentanan image dengan Trivy.
-        > Push image ke DockerHub jika semua langkah berhasil.
+        > **Linting (Code Check):** Menjalankan `ESLint` untuk memeriksa konsistensi dan potensi error pada kode.
+        > **Unit Testing:** Menjalankan `Vitest` untuk memverifikasi semua komponen dan fungsi berjalan sesuai harapan.
+        > **Build Docker Image:** Jika lolos tes, aplikasi akan di-build dan dikemas ke dalam sebuah Docker Image.
+        > **Scan Vulnerabilities:** Image yang sudah di-build akan dipindai oleh `Trivy` untuk mendeteksi kerentanan keamanan tingkat `HIGH` dan `CRITICAL`.
+        > **Push to Docker Hub:** Jika aman, image akan diunggah ke Docker Hub agar siap untuk di-deploy.
 
-2. Deployment Workflow
-    - Setiap kali ada push ke branch main, pipeline CD akan:
-        > Melakukan SSH ke EC2.
-        > Menulis ulang docker-compose.yml.
-        > Menarik image terbaru dari DockerHub.
-        > Meng-restart container aplikasi menggunakan Docker Compose.
+### 2. Continuous Deployment (CD) – `cd.yml`
 
----
-
-### CI/CD Workflow
-### 1. Pipeline CI (Continuous Integration) - (ci.yml)
-Pipeline ini bertugas untuk memastikan setiap perubahan kode pada dev branch memiliki kualitas yang baik, aman, dan siap untuk diintegrasikan.
-
-Trigger: Setiap push atau pull_request ke branch dev.
-
-Jobs:
-- Linting (lint): Menjalankan ESLint untuk memeriksa konsistensi gaya kode dan mendeteksi potensi masalah. Plugin eslint-plugin-security juga digunakan untuk SAST (Static Application Security Testing) sederhana.
-- Unit Testing (unit-test): Menjalankan pengujian unit menggunakan Vitest untuk memverifikasi fungsionalitas komponen aplikasi (misalnya, penambahan item, interaksi UI). Job ini bergantung pada keberhasilan job lint.
-- Build Docker Image (build): Jika testing berhasil, job ini akan membangun aplikasi React dan mengemasnya ke dalam sebuah Docker image menggunakan Dockerfile. Image ini diberi tag viexxx/kelompok13:latest.
-- Scan Docker Image (scan): Menggunakan Trivy untuk memindai kerentanan (vulnerabilities) pada Docker image yang baru saja dibuat, baik pada level OS maupun dependensi aplikasi. Job ini hanya akan melaporkan kerentanan HIGH dan CRITICAL.
-- Push to Docker Hub: Setelah build dan scan selesai, image diunggah ke Docker Hub agar siap digunakan untuk deployment.
-
-### 2. Pipeline CD (Continuous Deployment) - (cd.yml)
-Pipeline ini bertugas untuk men-deploy versi terbaru aplikasi ke server production (AWS EC2) secara otomatis.
-
-Trigger: Setiap push ke branch main.
-
-Jobs:
-- Koneksi ke EC2 via SSH
-Menggunakan GitHub Action appleboy/ssh-action untuk melakukan koneksi SSH ke instance EC2. Akses dilakukan menggunakan private key (tasktracker_key.pem) yang disimpan aman dalam secrets.PROD_SSH_KEY.
-- Penulisan docker-compose.yml di Server
-File docker-compose.yml ditulis secara otomatis ke direktori ~/kelompok13 dalam VM
-- Login dan Pull Docker Image
-Pipeline login ke DockerHub menggunakan username dan password dari Secrets (DOCKER_USERNAME dan DOCKER_PASSWORD) lalu menarik image terbaru dari viexxx/kelompok13:latest.
-- Redeploy Menggunakan Docker Compose
-untuk menghentikan container lama (jika ada) dan menjalankan container baru dari image terbaru secara otomatis.
-
-### Semua proses ini dikelola oleh GitHub Actions dalam folder .github/workflows/
-Setiap perubahan pada branch main akan secara otomatis:
-1. Build dan push Docker image ke DockerHub
-2. Menjalankan unit tests di dalam container
-3. Deploy image terbaru ke cloud VM (via SSH ke EC2)
+Pipeline ini secara otomatis men-deploy versi aplikasi terbaru ke server produksi (AWS EC2) yang telah disiapkan sebelumnya.
+    - **Trigger:** Setiap kali ada **Push/Merge** ke branch `main`.
+    - Pipeline CD akan:
+        >  **Connect to Server:** GitHub Actions membuat koneksi aman ke server **AWS EC2** menggunakan SSH.
+        > **Pull Latest Image:** Server menarik Docker Image versi terbaru dari Docker Hub.
+        > **Run with Docker Compose:** Kontainer lama dihentikan dan kontainer baru dijalankan dari image terbaru menggunakan `docker-compose`, membuat aplikasi versi baru langsung aktif.
 
 ---
 
@@ -113,29 +79,31 @@ Ikuti langkah-langkah berikut untuk menjalankan aplikasi di lingkungan pengemban
 
 Prasyarat
 - Node.js (v20 atau lebih baru)
-- npm (biasanya terinstal bersama Node.js)
+- npm
 
-Langkah-langkah:
-1. Clone Repository:
-```bash
-git clone https://github.com/PSO-B-Kelompok-13/demo-repository.git
-```
+**Langkah-langkah:**
+1.  Clone repositori ini:
+    ```bash
+    git clone https://github.com/PSO-B-Kelompok-13/demo-repository.git
+    cd demo-repository
+    ```
 
-2. Masuk ke direktori proyek and install dependencies:
-```bash
-cd demo-repository && npm install
-```
+2.  Install semua dependensi:
+    ```bash
+    npm install
+    ```
 
-3. Jalankan aplikasi:
-```bash
-npm run dev
-```
+3.  Jalankan server development:
+    ```bash
+    npm run dev
+    ```
 
-## 🔐 Konfigurasi dan Secrets
-Untuk mereplikasi pipeline CI/CD, Anda perlu mengkonfigurasi secrets berikut di repository GitHub Anda (Settings > Secrets and variables > Actions):
-- AWS_ACCESS_KEY_ID: Kunci akses AWS IAM.
-- AWS_SECRET_ACCESS_KEY: Kunci rahasia AWS IAM.
-- DOCKER_USERNAME: Username Docker Hub Anda.
-- DOCKER_PASSWORD: Password atau Access Token Docker Hub.
-- EC2_INSTANCE_PUBLIC_DNS: Alamat DNS publik dari instance EC2 Anda.
-- SSH_PRIVATE_KEY: Kunci privat SSH (.pem) untuk mengakses instance EC2.
+## 🔐 Konfigurasi Secrets
+
+Untuk menjalankan pipeline CI/CD di repositori Anda sendiri, konfigurasikan *secrets* berikut di `Settings > Secrets and variables > Actions`:
+
+-   `DOCKER_USERNAME`: Username Docker Hub Anda.
+-   `DOCKER_PASSWORD`: Password atau Access Token Docker Hub.
+-   `PROD_HOST`: Alamat IP publik dari instance AWS EC2 Anda.
+-   `PROD_USER`: Username untuk login ke EC2 (misalnya, `ubuntu` atau `ec2-user`).
+-   `PROD_SSH_KEY`: Kunci privat SSH (`.pem`) untuk mengakses instance EC2.
