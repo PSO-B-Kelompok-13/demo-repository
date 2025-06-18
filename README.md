@@ -6,6 +6,12 @@ Repositori ini merupakan hasil *fork* dan pengembangan lanjutan dari [cassidoo/t
 
 ---
 
+## 🖥️ Preview Aplikasi
+
+![Task Tracker Demo](./assets/demo-app.gif)
+
+---
+
 ## Develop by Kelompok 13 – PSO B
 
 - Viqi Alvianto - 5026221001
@@ -27,25 +33,47 @@ Aplikasi ini adalah sebuah To-Do List yang dirancang untuk membantu pengguna men
 - HTML / CSS / JavaScript
 
 ### 🐳 Containerization & Pipeline
-- Docker
+- Docker & DockerHub
 - GitHub Actions (CI/CD)
+- ESLint (Code Quality)
 - Vitest (Unit Testing)
 - Trivy (Vulnerability Scanning)
 
-### ☁️ Deployment & Infrastructure
-- Terraform
-- AWS EC2
-- DockerHub
+### ☁️ Deployment
+- AWS EC2 (manual provisioning)
+- Docker Compose (auto deployment via SSH)
 
 ---
 
 ## Alur Kerja
 
-### Diagram Alur Kerja Sederhana
+### Diagram Workflow Sederhana
 ![image](https://github.com/user-attachments/assets/394af56a-4f0c-4882-80bf-0f2f737b6caf)
 
+---
+
+##🔁 Workflow Implementation
+1. Development Workflow
+    - Developer membuat atau memperbarui branch dari main.
+    - Setelah fitur selesai, dilakukan push ke branch dan membuat pull request.
+    - Pipeline CI akan otomatis berjalan untuk:
+        > Linting kode menggunakan ESLint.
+        > Menjalankan unit test dengan Vitest.
+        > Build Docker image dan tag sebagai viexxx/kelompok13:latest.
+        > Scan kerentanan image dengan Trivy.
+        > Push image ke DockerHub jika semua langkah berhasil.
+
+2. Deployment Workflow
+    - Setiap kali ada push ke branch main, pipeline CD akan:
+        > Melakukan SSH ke EC2.
+        > Menulis ulang docker-compose.yml.
+        > Menarik image terbaru dari DockerHub.
+        > Meng-restart container aplikasi menggunakan Docker Compose.
+
+---
+
 ### CI/CD Workflow
-### 1. Pipeline CI (Continuous Integration) - (cicd.yml)
+### 1. Pipeline CI (Continuous Integration) - (ci.yml)
 Pipeline ini bertugas untuk memastikan setiap perubahan kode pada dev branch memiliki kualitas yang baik, aman, dan siap untuk diintegrasikan.
 
 Trigger: Setiap push atau pull_request ke branch dev.
@@ -57,42 +85,27 @@ Jobs:
 - Scan Docker Image (scan): Menggunakan Trivy untuk memindai kerentanan (vulnerabilities) pada Docker image yang baru saja dibuat, baik pada level OS maupun dependensi aplikasi. Job ini hanya akan melaporkan kerentanan HIGH dan CRITICAL.
 - Push to Docker Hub: Setelah build dan scan selesai, image diunggah ke Docker Hub agar siap digunakan untuk deployment.
 
-### 2. Pipeline CD (Continuous Deployment) - (cicd.yml)
+### 2. Pipeline CD (Continuous Deployment) - (cd.yml)
 Pipeline ini bertugas untuk men-deploy versi terbaru aplikasi ke server production (AWS EC2) secara otomatis.
 
 Trigger: Setiap push ke branch main.
 
 Jobs:
-- Configure AWS Credentials: Mengautentikasi GitHub Actions agar dapat berinteraksi dengan layanan AWS.
-- Pull Docker Image: Mengunduh image viexxx/kelompok13:latest dari Docker Hub ke runner GitHub Actions.
-- Deploy to EC2:
-- Membuat koneksi SSH ke instance AWS EC2 menggunakan private key yang disimpan di GitHub Secrets.
-- Menjalankan serangkaian perintah di dalam server EC2:
-- docker pull viexxx/kelompok13:latest: Memastikan server memiliki image terbaru.
-- docker rm -f devops-pso-container || true: Menghentikan dan menghapus kontainer lama (jika ada).
-- docker run -d -p 3000:3000 ...: Menjalankan kontainer baru dari image yang telah di-pull, dan memetakan port 3000 dari kontainer ke port 3000 di host EC2.
-
-### 3. Pipeline IaC (Infrastructure as Code) - terraform.yml
-Pipeline ini digunakan untuk provisi dan manajemen infrastruktur di AWS secara otomatis menggunakan Terraform.
-
-Trigger: Setiap push ke branch infra.
-
-Tujuan: Membuat atau memperbarui infrastruktur yang diperlukan untuk aplikasi, yaitu:
-- AWS EC2 Instance: Sebuah server virtual t2.micro untuk hosting aplikasi.
-- Security Group: Aturan firewall yang mengizinkan trafik masuk pada port 22 (SSH) dan 3000 (HTTP).
-
-Jobs:
-- Setup Terraform: Menginisialisasi Terraform di runner.
-- Terraform Plan: Menampilkan rencana perubahan infrastruktur tanpa menerapkannya.
-- Terraform Apply: Menerapkan perubahan yang direncanakan untuk membuat atau memperbarui sumber daya di AWS.
+- Koneksi ke EC2 via SSH
+Menggunakan GitHub Action appleboy/ssh-action untuk melakukan koneksi SSH ke instance EC2. Akses dilakukan menggunakan private key (tasktracker_key.pem) yang disimpan aman dalam secrets.PROD_SSH_KEY.
+- Penulisan docker-compose.yml di Server
+File docker-compose.yml ditulis secara otomatis ke direktori ~/kelompok13 dalam VM
+- Login dan Pull Docker Image
+Pipeline login ke DockerHub menggunakan username dan password dari Secrets (DOCKER_USERNAME dan DOCKER_PASSWORD) lalu menarik image terbaru dari viexxx/kelompok13:latest.
+- Redeploy Menggunakan Docker Compose
+untuk menghentikan container lama (jika ada) dan menjalankan container baru dari image terbaru secara otomatis.
 
 
 ### Semua proses ini dikelola oleh GitHub Actions dalam folder .github/workflows/
 Setiap perubahan pada branch main akan secara otomatis:
 1. Build dan push Docker image ke DockerHub
 2. Menjalankan unit tests di dalam container
-3. Provisioning infrastruktur cloud (via Terraform)
-4. Deploy image terbaru ke cloud VM (via SSH ke EC2)
+3. Deploy image terbaru ke cloud VM (via SSH ke EC2)
 
 ## Menjalankan Proyek Secara Lokal
 Ikuti langkah-langkah berikut untuk menjalankan aplikasi di lingkungan pengembangan lokal Anda.
