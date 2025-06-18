@@ -17,7 +17,7 @@ function TodoDate() {
         </div>
       </div>
       <div className={styles.weekday}>{date.weekday}</div>
-      {/* Dark mode toggle button has been removed as part of rollback:) */}
+      {/* Dark mode toggle button has been removed as part of rollback */}
       <div className={styles.pomodoroContainer}>
         <PomodoroTimer />
       </div>
