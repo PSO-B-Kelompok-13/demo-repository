@@ -45,10 +45,10 @@ Aplikasi ini adalah sebuah To-Do List yang dirancang untuk membantu pengguna men
 
 ---
 
-## Alur Kerja (CI/CD)
+## 🚀 Alur Kerja (CI/CD)
 
 ### Diagram Workflow Sederhana
-![image](https://github.com/user-attachments/assets/394af56a-4f0c-4882-80bf-0f2f737b6caf)
+![image](https://github.com/user-attachments/assets/67337bac-211b-403a-a353-6bd77f75b2c5)
 
 ---
 
