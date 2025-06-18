@@ -18,6 +18,7 @@ function TodoDate({ toggleTheme, currentTheme }) {
         </div>
       </div>
       <div className={styles.weekday}>{date.weekday}</div>
+      {/*
       <button
         onClick={toggleTheme}
         className={`${styles.themeToggle} theme-toggle-button neumorphic`}
@@ -25,7 +26,7 @@ function TodoDate({ toggleTheme, currentTheme }) {
       >
         {currentTheme === "light" ? "🌙" : "☀️"}
       </button>
-
+      */}
       <div className={styles.pomodoroContainer}>
         <PomodoroTimer />
       </div>
